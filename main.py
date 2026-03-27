@@ -1,8 +1,16 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from typing import Annotated
+from pydantic import Field, BaseModel
 
+class Product(BaseModel):
+    name:Annotated[str, Field(min_length=3, max_length=30)]
+    price:Annotated[float, Field(gt=0)]
+    location:Annotated[str, Field(min_length=3)]
+#product = Product.model_validate({"name":"notebook DELL", "price":2999.99, "location":"Cagliari"})
+#product_list.append(product)
 app = FastAPI()
 app.mount("/static", StaticFiles(directory = "static"), name="static")
 templates = Jinja2Templates(directory="templates") #dobbiamo dire al motore di templating dove sono contenuti i nostri file di templates
@@ -27,6 +35,25 @@ def products(request: Request):
         name='products.html',
         context={"product_list": product_list}
     )
+@app.get("/add_product", response_class=HTMLResponse)
+def add_product(
+        request: Request,
+):
+    return templates.TemplateResponse(      #restituisco la pagina web
+        request=request,
+        name='add_product.html',
+    )
+@app.post("/insert_product", response_class=HTMLResponse)
+def insert_product(
+        product: Annotated[Product, Form()]
+):
+    product_list.append(product.model_dump(product.model_dump()))
+    return "Product added successfully"
+
+@app.post("/insert_product_json")
+def insert_product_json(
+        product: Product
+): print(product)
 
 """
 @app.get("/ciao")

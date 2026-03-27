@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form action ="{{url_for('insert_product') }}" metod="post">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" required> <!-- name è il nome del campo che viene passato al server quando si invia il form-->
+    <br>
+    <label for="price">Price</label><br>
+    <input type="number" min="0" id="price" name="price" required>
+    <br>
+    <label for="location">Location:</label><br>
+    <input type="text" id="location" name="location" required>
+
+    <br><br>
+    <!--aggiungiamo il botttone-->
+    <input type="submit" value="Add">
+    <input type="reset" value="Reset"> <!-- resetta i campi del form-->
+</form>
+
+{% endblock %}
+

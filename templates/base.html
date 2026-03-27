@@ -13,6 +13,7 @@
     <nav>
         <a href="/">Home</a>
         <a href="/products">Products</a>
+        <a href="{{ url_for('add_product') }}">Add Product</a>
     </nav>
     <div class = "container">
         {% block content%}          <!--aprire un placeholder e "content è il nome"-->
