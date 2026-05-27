@@ -16,5 +16,6 @@ class BookPublic(BookBase):  #schema utilizzato nelle get, (ci dovrà essere l'i
 
 class BookDB(BookBase, table=True):
     id: int = Field(default=None, primary_key=True)
+    user_id: int | None = Field(default=None, foreign_key='User.id')
 
 

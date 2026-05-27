@@ -2,6 +2,7 @@ from sqlmodel import create_engine, SQLModel, Session
 from typing import Annotated
 from fastapi import Depends
 from schemas.book import BookDB # noqa
+from schemas.users import UserDB
 from faker import Faker   #pip install faker
 import os
 
@@ -23,9 +24,16 @@ def init_database():
                 book = BookDB(
                     title=f.sentence(nb_words=5),
                     author=f.name(),
-                    review=f.pyint(1,5)
+                    review=f.pyint(1,5),
+                    user_id= f.pyint(1,10)
                 )
                 session.add(book)
+            for i in range(10):
+                user = UserDB(
+                    name = f.name(),
+                    birth_year = f.date_of_birth(),
+                    city=f.city()
+                )
             session.commit() #dentro il contex manager
 
 #dependecies
